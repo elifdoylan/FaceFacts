@@ -1,8 +1,7 @@
-from flask import Blueprint, jsonify, request, render_template
-from .. import db  
-from ..models import Blog
+from flask import Blueprint, jsonify, request
 
-
+from .. import db
+from ..models.Blog import Blog
 
 blog_blueprint = Blueprint("blog", __name__)
 
@@ -21,22 +20,26 @@ def create_blog():
     except:
         return jsonify({"message": "An error occurred creating the blog"}), 500
 
-@blog_blueprint.route("/anasayfa", methods=["GET"])
+@blog_blueprint.route("/blogs", methods=["GET"])
 def get_blogs():
-    
-    return render_template("index.html")
-    # try:
-    #     blogs = Blog.query.all()
-    #     return jsonify([blog.json() for blog in blogs]), 200
-    # except:
-    #     return jsonify({"message": "An error occurred retrieving the blogs"}), 500
-
-
-@blog_blueprint.route("/blog", methods=["GET"])
-def get_ingredients():
     try:
-        Blogs = Blog.query.all()  # Tüm Not nesnelerini alın
-        Blog_data = [Blog.data for Blog in Blogs]  # Her bir Not nesnesinin `data` özelliğini alın
-        return render_template("icerik.html", Blogs=Blog_data)  # `Blog_data` listesini render_template'e geçirin
-    except Exception as e:
-        return f"An error occurred: {str(e)}"
+        blogs = Blog.query.all()
+        return jsonify([blog.json() for blog in blogs]), 200
+    except:
+        return jsonify({"message": "An error occurred retrieving the blogs"}), 500
+
+
+@blog_blueprint.route("/blogs", methods=["DELETE"])
+def delete_blog():
+    try:
+        data = request.get_json()
+    except:
+        return jsonify({"message": "Invalid data"}), 400
+
+    try:
+        blog = Blog.query.filter_by(id=data["id"]).first()
+        db.session.delete(blog)
+        db.session.commit()
+        return jsonify({"message": "Blog deleted"}), 200
+    except:
+        return jsonify({"message": "An error occurred deleting the blog"}), 500
