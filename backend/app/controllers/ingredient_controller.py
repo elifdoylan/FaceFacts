@@ -70,8 +70,6 @@ def compare_ingredients():
         for ingredient in ingredients:
             for db_ingredient in all_ingredients_in_db:
                 if db_ingredient.name.lower() == ingredient.lower():
-                    print(f"Ingredient: {ingredient}, isHarmful: {db_ingredient.isHarmful}, harmfulSkin: {db_ingredient.harmfulSkin}")
-                    print(f"Skin type: {skin_type}")
                     if db_ingredient.isHarmful and skin_type.lower() in db_ingredient.harmfulSkin.lower():
                         harmful_ingredients.append(db_ingredient.name)
                     elif db_ingredient.isHarmful and "gözenek tıkayıcı" in db_ingredient.harmfulSkin.lower():
