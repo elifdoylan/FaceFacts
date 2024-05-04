@@ -1,7 +1,6 @@
 import requests
 
 def create_data(filename):
-    # open txt file and readlines if the line includes : it is a key, the rest of the lines until seeing another : is the value, there will be multiple values for a key so we will use a dictionary to store the key value pairs
     with open(filename, "r") as file:
         lines = file.readlines()
         data = {}
