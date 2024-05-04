@@ -33,7 +33,7 @@ def populate_database(data, db):
         for value in values:
             ingredient = {
                 "name": value,
-                "isHarmful": False,
+                "isHarmful": True,
                 "harmfulSkin": key
             }
             response = requests.post(f'http://127.0.0.1:5000/ingredient', json=ingredient)
